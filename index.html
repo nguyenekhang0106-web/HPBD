@@ -82,7 +82,7 @@
         }
       }
 
-      /* MÀN HÌNH 1: KHÓA NHẬP MÃ */
+      /* KHÓA NHẬP MÃ */
       .card-container {
         background: rgba(255, 255, 255, 0.45);
         backdrop-filter: blur(15px);
@@ -241,7 +241,7 @@
         }
       }
 
-      /* GỢI Ý CÀO MÃ */
+      /* GỢI Ý MÃ */
       .hint-overlay {
         position: fixed;
         top: 0;
@@ -343,7 +343,7 @@
         z-index: 2;
       }
 
-      /* MÀN HÌNH MENU CHỨC NĂNG */
+      /* MENU CHỨC NĂNG */
       .menu-screen {
         position: absolute;
         top: 0;
@@ -476,6 +476,8 @@
       .menu-item:hover span {
         color: #ff6b81;
       }
+
+      /* ĐIỀU CHỈNH RIÊNG NÚT MUSIC MENU KHI PHÁT NHẠC */
       .music-menu-item.playing .icon-bg svg {
         animation: wobbleIcon 0.9s ease-in-out infinite;
       }
@@ -483,7 +485,9 @@
         color: #ff1493;
       }
 
-      /* MUSIC BOX & GIFT BOX */
+      /* =========================================
+         MÀN HÌNH CHỨC NĂNG CHUNG (OVERLAY)
+         ========================================= */
       .feature-overlay {
         position: fixed;
         inset: 0;
@@ -520,9 +524,13 @@
       .feature-close:hover {
         transform: scale(1.08) rotate(90deg);
       }
+
+      /* =========================================
+         BOX MUSIC PLAYER MỚI
+         ========================================= */
       .music-box {
         position: relative;
-        width: min(92vw, 760px);
+        width: min(95vw, 840px); /* Phóng to Box Music */
         min-height: 380px;
         border-radius: 34px;
         background:
@@ -538,14 +546,14 @@
           ),
           linear-gradient(
             145deg,
-            rgba(255, 255, 255, 0.8),
-            rgba(250, 229, 236, 0.74)
+            rgba(255, 255, 255, 0.9),
+            rgba(250, 229, 236, 0.8)
           );
         border: 4px solid rgba(255, 210, 226, 0.95);
         box-shadow:
           0 28px 70px rgba(131, 61, 86, 0.28),
           inset 0 0 0 2px rgba(255, 255, 255, 0.62);
-        padding: 28px 30px 30px;
+        padding: 30px 40px;
         transform: translateY(30px) scale(0.86);
         transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         overflow: hidden;
@@ -572,23 +580,10 @@
         top: 56px;
         background: rgba(255, 160, 184, 0.3);
       }
-      .feature-overlay.show .music-box,
-      .feature-overlay.show .gift-stage {
+      .feature-overlay.show .music-box {
         transform: translateY(0) scale(1);
       }
-      .gift-title {
-        font-family: "Dancing Script", cursive;
-        color: #d81b60;
-        font-size: 42px;
-        line-height: 1;
-        margin-bottom: 8px;
-      }
-      .gift-subtitle {
-        color: #8e244d;
-        font-size: 14px;
-        font-weight: 800;
-        margin-bottom: 26px;
-      }
+
       .music-player-title {
         position: relative;
         z-index: 2;
@@ -597,11 +592,11 @@
         align-items: center;
         gap: 8px;
         color: #d81b60;
-        font-size: 13px;
+        font-size: 14px;
         font-weight: 900;
         letter-spacing: 0.8px;
         text-transform: uppercase;
-        margin-bottom: 18px;
+        margin-bottom: 25px;
       }
       .music-player-title::before {
         content: "🎧";
@@ -615,14 +610,16 @@
         box-shadow: 0 5px 12px rgba(216, 27, 96, 0.14);
         font-size: 14px;
       }
+
       .music-player-layout {
         position: relative;
         z-index: 2;
         display: grid;
-        grid-template-columns: 260px minmax(0, 1fr);
-        gap: 26px;
+        grid-template-columns: 280px minmax(0, 1fr);
+        gap: 40px;
         align-items: center;
       }
+
       .now-playing-panel {
         display: flex;
         flex-direction: column;
@@ -631,13 +628,13 @@
       }
       .music-avatar {
         position: relative;
-        width: 134px;
-        height: 134px;
+        width: 160px;
+        height: 160px;
         border-radius: 50%;
         padding: 6px;
         background: linear-gradient(135deg, #ffffff, #ff8eb3);
         box-shadow: 0 12px 28px rgba(216, 27, 96, 0.25);
-        margin-bottom: 22px;
+        margin-bottom: 25px;
       }
       .music-avatar img {
         width: 100%;
@@ -645,59 +642,74 @@
         object-fit: cover;
         border-radius: 50%;
         display: block;
+        /* HIỆU ỨNG XOAY ĐĨA THAN */
+        animation: spinRecord 10s linear infinite;
+        animation-play-state: paused; /* Mặc định dừng */
       }
-      .music-box.playing .music-avatar {
-        animation: softPulse 1.7s ease-in-out infinite;
+      /* Kích hoạt xoay khi class playing được thêm vào music-box */
+      .music-box.playing .music-avatar img {
+        animation-play-state: running;
       }
+      @keyframes spinRecord {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
       .track-marquee {
         width: 100%;
-        max-width: 235px;
+        max-width: 250px;
         min-height: 25px;
         overflow: hidden;
         color: #e91e63;
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 900;
         white-space: nowrap;
         text-align: center;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
       }
       .track-marquee span {
         display: inline-block;
-        padding-left: 100%;
-        animation: marqueeTrack 10s linear infinite;
       }
+
       .music-progress {
         width: 100%;
-        max-width: 250px;
-        margin-bottom: 16px;
+        max-width: 260px;
+        margin-bottom: 20px;
       }
       .progress-time {
         display: flex;
         justify-content: space-between;
         color: #e91e63;
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 800;
-        margin-bottom: 6px;
+        margin-bottom: 8px;
       }
+
+      /* THANH TUA NHẠC CÓ THỂ CLICK */
       .progress-rail {
-        height: 5px;
+        height: 6px;
         border-radius: 99px;
         background: rgba(255, 255, 255, 0.76);
-        overflow: hidden;
         box-shadow: inset 0 1px 4px rgba(216, 27, 96, 0.12);
+        cursor: pointer; /* Cho phép click */
+        position: relative;
+        overflow: hidden;
       }
       .progress-fill {
         width: 0%;
         height: 100%;
         border-radius: inherit;
         background: linear-gradient(90deg, #ff1493, #ff7aa8);
-        transition: width 0.25s ease;
+        transition: width 0.1s linear;
+        pointer-events: none; /* Bỏ qua event để nhường cho thẻ mẹ rail */
       }
+
       .music-controls {
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 18px;
+        gap: 25px;
       }
       .music-skip-btn,
       .music-toggle-btn {
@@ -711,20 +723,25 @@
           box-shadow 0.22s ease;
       }
       .music-skip-btn {
-        width: 34px;
-        height: 34px;
+        width: 40px;
+        height: 40px;
         border-radius: 50%;
         background: transparent;
-        font-size: 23px;
+        font-size: 32px;
         line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       .music-skip-btn:hover {
-        transform: scale(1.14);
+        transform: scale(1.2);
       }
+
+      /* Nút Play/Pause thiết kế mới */
       .music-toggle-btn {
-        width: 58px;
-        height: 58px;
-        min-width: 58px;
+        width: 60px;
+        height: 60px;
+        min-width: 60px;
         border-radius: 50%;
         background: #e91e63;
         color: white;
@@ -739,22 +756,23 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 20px;
+        font-size: 22px;
         padding-left: 3px;
       }
       .music-box.playing .music-toggle-btn::before {
         content: "Ⅱ";
         padding-left: 0;
-        font-size: 20px;
+        font-size: 22px;
       }
       .music-toggle-btn:hover {
-        transform: translateY(-2px) scale(1.04);
+        transform: translateY(-2px) scale(1.06);
         box-shadow: 0 15px 32px rgba(216, 27, 96, 0.42);
       }
+
       .playlist-panel {
         min-width: 0;
-        max-height: 270px;
-        padding-right: 10px;
+        max-height: 290px;
+        padding-right: 15px;
         overflow-y: auto;
         scrollbar-color: #ff8eb3 rgba(255, 255, 255, 0.35);
         scrollbar-width: thin;
@@ -770,19 +788,20 @@
         background: #ff8eb3;
         border-radius: 99px;
       }
+
       .playlist-track {
         display: flex;
         align-items: center;
-        gap: 12px;
-        min-height: 56px;
-        padding: 9px 12px;
-        border-radius: 10px;
+        gap: 15px;
+        min-height: 60px;
+        padding: 10px 15px;
+        border-radius: 12px;
         background: rgba(255, 255, 255, 0.62);
         box-shadow: 0 8px 18px rgba(117, 70, 87, 0.08);
         color: #d81b60;
-        font-size: 13px;
+        font-size: 14px;
         font-weight: 900;
-        margin-bottom: 11px;
+        margin-bottom: 12px;
         cursor: pointer;
         transition:
           transform 0.22s ease,
@@ -790,12 +809,12 @@
       }
       .playlist-track:hover,
       .playlist-track.active {
-        transform: translateX(3px);
+        transform: translateX(5px);
         background: rgba(245, 176, 198, 0.74);
       }
       .playlist-track img {
-        width: 38px;
-        height: 38px;
+        width: 42px;
+        height: 42px;
         border-radius: 8px;
         object-fit: cover;
         flex: 0 0 auto;
@@ -805,193 +824,8 @@
         text-overflow: ellipsis;
         white-space: nowrap;
       }
-      @keyframes softPulse {
-        0%,
-        100% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.045);
-        }
-      }
-      @keyframes marqueeTrack {
-        0% {
-          transform: translateX(0);
-        }
-        100% {
-          transform: translateX(-100%);
-        }
-      }
-      @media (max-width: 760px) {
-        .music-box {
-          width: min(94vw, 430px);
-          padding: 24px 18px;
-          border-radius: 26px;
-        }
-        .music-player-layout {
-          grid-template-columns: 1fr;
-          gap: 20px;
-        }
-        .playlist-panel {
-          width: 100%;
-          max-height: 210px;
-        }
-        .music-avatar {
-          width: 120px;
-          height: 120px;
-        }
-        .track-marquee {
-          font-size: 16px;
-        }
-      }
-      .gift-stage {
-        position: relative;
-        width: min(92vw, 520px);
-        min-height: 500px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        transform: translateY(30px) scale(0.86);
-        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        text-align: center;
-      }
-      .gift-scene {
-        position: relative;
-        width: 250px;
-        height: 235px;
-        margin-top: 18px;
-        cursor: pointer;
-        filter: drop-shadow(0 22px 22px rgba(216, 27, 96, 0.2));
-      }
-      .gift-lid,
-      .gift-body {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #ff5d8f;
-        border: 4px solid #ffffff;
-        box-shadow: inset 0 0 0 7px rgba(255, 255, 255, 0.18);
-      }
-      .gift-lid {
-        top: 38px;
-        width: 230px;
-        height: 62px;
-        border-radius: 12px 12px 7px 7px;
-        transform-origin: 12% 100%;
-        z-index: 3;
-        transition: transform 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      }
-      .gift-body {
-        bottom: 0;
-        width: 200px;
-        height: 140px;
-        border-radius: 8px 8px 18px 18px;
-        z-index: 2;
-      }
-      .gift-lid::before,
-      .gift-body::before {
-        content: "";
-        position: absolute;
-        top: -4px;
-        left: 50%;
-        width: 36px;
-        height: calc(100% + 8px);
-        background: #fff3a3;
-        transform: translateX(-50%);
-      }
-      .gift-bow {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        width: 122px;
-        height: 62px;
-        transform: translateX(-50%);
-        z-index: 4;
-        transition: transform 0.65s ease;
-      }
-      .gift-bow::before,
-      .gift-bow::after {
-        content: "";
-        position: absolute;
-        top: 12px;
-        width: 60px;
-        height: 42px;
-        border: 10px solid #fff3a3;
-        border-radius: 50% 50% 45% 45%;
-        background: rgba(255, 255, 255, 0.18);
-      }
-      .gift-bow::before {
-        right: 50%;
-        transform: rotate(-18deg);
-      }
-      .gift-bow::after {
-        left: 50%;
-        transform: rotate(18deg);
-      }
-      .gift-card {
-        position: absolute;
-        left: 50%;
-        bottom: 64px;
-        width: 235px;
-        min-height: 150px;
-        padding: 20px 18px;
-        border-radius: 20px;
-        background: #fffaf0;
-        border: 4px solid #ffdde6;
-        box-shadow: 0 18px 34px rgba(216, 27, 96, 0.18);
-        color: #d81b60;
-        transform: translateX(-50%) translateY(85px) scale(0.6);
-        opacity: 0;
-        z-index: 1;
-        transition:
-          transform 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-          opacity 0.4s ease;
-      }
-      .gift-card strong {
-        display: block;
-        font-family: "Dancing Script", cursive;
-        font-size: 30px;
-        line-height: 1;
-        margin-bottom: 10px;
-      }
-      .gift-card p {
-        font-size: 14px;
-        line-height: 1.55;
-        font-weight: 800;
-      }
-      .gift-stage.opened .gift-lid {
-        transform: translateX(-58%) translateY(-74px) rotate(-22deg);
-      }
-      .gift-stage.opened .gift-bow {
-        transform: translateX(-60%) translateY(-78px) rotate(-16deg);
-      }
-      .gift-stage.opened .gift-card {
-        opacity: 1;
-        transform: translateX(-50%) translateY(-92px) scale(1);
-      }
-      .gift-sparkle {
-        position: absolute;
-        left: 50%;
-        bottom: 150px;
-        font-size: 24px;
-        opacity: 0;
-        pointer-events: none;
-        animation: giftSpark 1.3s ease-out forwards;
-      }
-      @keyframes giftSpark {
-        from {
-          opacity: 1;
-          transform: translate(-50%, 30px) scale(0.6) rotate(0deg);
-        }
-        to {
-          opacity: 0;
-          transform: translate(calc(-50% + var(--tx)), var(--ty)) scale(1.4)
-            rotate(var(--rot));
-        }
-      }
 
-      /* MÀN HÌNH ĐỌC THƯ */
+      /* MÀN HÌNH ĐỌC THƯ (ENVELOPE & LETTER) */
       .letter-overlay {
         position: fixed;
         top: 0;
@@ -1000,7 +834,6 @@
         height: 100%;
         background: rgba(255, 230, 238, 0.85);
         backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
         display: none;
         justify-content: center;
         align-items: center;
@@ -1156,7 +989,6 @@
       .envelope-wrapper.open .env-dummy-letter {
         transform: translateY(-120px);
       }
-
       .reading-letter {
         position: absolute;
         width: 90vw;
@@ -1281,9 +1113,7 @@
         }
       }
 
-      /* =========================================
-         ALBUM ẢNH & LIGHTBOX (NỀN TRONG SUỐT)
-         ========================================= */
+      /* ALBUM ẢNH & LIGHTBOX (NỀN TRONG SUỐT) */
       .image-overlay {
         position: fixed;
         top: 0;
@@ -1460,7 +1290,6 @@
       .next-btn {
         right: 25px;
       }
-
       .heart-react-btn {
         margin-top: -25px;
         width: 55px;
@@ -1493,7 +1322,6 @@
         fill: #ff6b81;
         transform: scale(1.1);
       }
-
       .react-particle {
         position: fixed;
         pointer-events: none;
@@ -1519,7 +1347,8 @@
         }
       }
 
-      @media (max-width: 600px) {
+      /* RESPONSIVE GIAO DIỆN CHUNG CHO ĐIỆN THOẠI */
+      @media (max-width: 760px) {
         body {
           overflow-y: auto;
           align-items: flex-start;
@@ -1534,9 +1363,6 @@
         }
         .image-section {
           height: 260px;
-        }
-        .bday-title {
-          font-size: 38px;
         }
         .numpad {
           gap: 12px;
@@ -1578,12 +1404,6 @@
           padding: 50px 20px 70px 20px;
           border-width: 3px;
         }
-        .top-left-decor {
-          font-size: 28px;
-        }
-        .letter-sticker {
-          font-size: 45px;
-        }
         .gallery-box {
           padding: 40px 8px 8px 8px;
         }
@@ -1605,6 +1425,226 @@
           max-width: 95vw;
           max-height: 70vh;
           border-width: 4px;
+        }
+
+        .music-box {
+          width: min(94vw, 430px);
+          padding: 24px 18px;
+          border-radius: 26px;
+        }
+        .music-player-layout {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+        .playlist-panel {
+          width: 100%;
+          max-height: 210px;
+        }
+        .music-avatar {
+          width: 130px;
+          height: 130px;
+        }
+        .track-marquee {
+          font-size: 18px;
+        }
+      }
+
+      /* =========================================
+         CSS BÁNH KEM 3D (MẶT NẮP KHÍT & XOAY MƯỢT)
+         ========================================= */
+      .cake-3d-stage {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        perspective: 2000px; /* Tăng chiều sâu 3D cho ảnh thực tế hơn */
+        transition:
+          opacity 0.5s ease,
+          transform 0.5s ease;
+      }
+
+      .cake-drag-area {
+        width: 100%;
+        height: 60vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: grab;
+        z-index: 50;
+      }
+      .cake-drag-area:active {
+        cursor: grabbing;
+      }
+
+      .cake-container {
+        position: relative;
+        width: 0;
+        height: 0; /* Đưa tâm về 0x0 để xoay chuẩn xác */
+        transform-style: preserve-3d;
+        transform: rotateX(-15deg) rotateY(0deg);
+      }
+
+      .cake-tier {
+        position: absolute;
+        left: 0;
+        top: 0;
+        transform-style: preserve-3d;
+      }
+
+      .cake-panel {
+        position: absolute;
+        background-size: cover;
+        background-position: center;
+        border: 2px solid rgba(255, 255, 255, 0.9);
+        box-shadow:
+          inset 0 0 10px rgba(0, 0, 0, 0.1),
+          0 0 5px rgba(0, 0, 0, 0.2);
+        backface-visibility: hidden;
+      }
+
+      .cake-face {
+        position: absolute;
+        border-radius: 50%;
+        background-color: #ffdde6;
+        background-size: cover;
+        background-position: center;
+        border: 3px solid #fff;
+        backface-visibility: hidden;
+      }
+
+      .cake-candle {
+        position: absolute;
+        font-size: 50px;
+        cursor: pointer;
+        z-index: 100;
+        filter: drop-shadow(0 0 15px #ff1493);
+        animation: flicker 0.5s infinite alternate;
+        transition: transform 0.2s;
+      }
+      /* Quan trọng: Phải dùng !important để hover nến to ra mà không bị ghi đè tọa độ */
+      .cake-candle:hover {
+        transform: scale(1.3) !important;
+      }
+      @keyframes flicker {
+        0% {
+          opacity: 0.8;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      /* Khung bong bóng ảnh bay */
+      .floating-memories {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        opacity: 0;
+        display: none;
+        z-index: 10;
+      }
+      .floating-memories.show {
+        display: block;
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .bubble-memory {
+        position: absolute;
+        bottom: -120px;
+        border-radius: 50%;
+        background-size: cover;
+        background-position: center;
+        border: 4px solid #fff;
+        box-shadow: 0 10px 20px rgba(255, 105, 180, 0.4);
+        cursor: pointer;
+        transition: transform 0.3s;
+        animation: floatBubble linear infinite;
+      }
+      .bubble-memory:hover {
+        transform: scale(1.2);
+        z-index: 100;
+        border-color: #ff1493;
+      }
+
+      @keyframes floatBubble {
+        0% {
+          transform: translateY(0) scale(1);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-120vh) scale(1);
+          opacity: 0;
+        }
+      }
+
+      /* =========================================
+         HIỆU ỨNG HOA NỔ VÀ RƠI CÙNG TIN NHẮN
+         ========================================= */
+      .falling-flower {
+        position: absolute;
+        font-size: 65px; /* Kích thước bông hoa */
+        filter: drop-shadow(0 4px 10px rgba(255, 105, 180, 0.5));
+        animation: fallDownFlower 2.5s cubic-bezier(0.3, 0, 0.8, 1) forwards;
+        pointer-events: none;
+        z-index: 1000;
+      }
+
+      .falling-text {
+        position: absolute;
+        transform: translateX(-50%);
+        color: #d81b60;
+        font-family: "Dancing Script", cursive;
+        font-size: 26px;
+        font-weight: bold;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 8px 20px;
+        border-radius: 20px;
+        box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
+        white-space: nowrap;
+        animation: fallDownText 2.5s cubic-bezier(0.3, 0, 0.8, 1) forwards;
+        pointer-events: none;
+        z-index: 1000;
+      }
+
+      @keyframes fallDownFlower {
+        0% {
+          transform: translateY(0) scale(1) rotate(0deg);
+          opacity: 1;
+        }
+        10% {
+          transform: translateY(-30px) scale(1.4) rotate(15deg);
+          opacity: 1;
+        } /* Nẩy lên và to ra như vụ nổ */
+        100% {
+          transform: translateY(100vh) scale(0.8) rotate(180deg);
+          opacity: 0;
+        } /* Rơi rụng xuống */
+      }
+
+      @keyframes fallDownText {
+        0% {
+          transform: translate(-50%, 0) scale(0.5);
+          opacity: 0;
+        }
+        10% {
+          transform: translate(-50%, -10px) scale(1.1);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(-50%, 100vh) scale(0.9);
+          opacity: 0;
         }
       }
     </style>
@@ -1730,16 +1770,11 @@
       >
     </div>
 
-    <audio id="bgMusic" loop>
-      <source src="nhac-background.mp4" type="audio/mp4" />
-    </audio>
+    <audio id="bgMusic"></audio>
 
     <div class="card-container" id="lock-card">
       <div class="image-section">
-        <img
-          src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-          alt="Girl"
-        />
+        <img src="DUNG1.jpg" alt="Girl" />
       </div>
       <div class="lock-section">
         <div class="bday-title">Happy Birthday!</div>
@@ -1802,7 +1837,7 @@
 
     <div class="menu-screen" id="menu-screen">
       <div class="menu-grid">
-        <div class="menu-item music-menu-item" onclick="toggleMusicBox(event)">
+        <div class="menu-item music-menu-item" onclick="showMusicBox(event)">
           <div class="icon-bg">
             <svg
               viewBox="0 0 64 64"
@@ -1937,6 +1972,35 @@
       </div>
     </div>
 
+    <!-- MÀN HÌNH BÁNH KEM 3D & BONG BÓNG ẢNH -->
+    <div class="feature-overlay" id="gift-overlay">
+      <button class="feature-close" onclick="closeGiftBox()">×</button>
+
+      <!-- Khung chứa Bánh kem -->
+      <div class="cake-3d-stage" id="cake-3d-stage">
+        <div class="gift-title" id="cake-title">Hãy nhấn vào ngọn nến 🔥</div>
+
+        <!-- Nơi người dùng dùng chuột/tay để xoay -->
+        <div class="cake-drag-area" id="cake-drag-area">
+          <div class="cake-container" id="cake-container">
+            <!-- Ngọn nến (Click vào đây mới nổ) -->
+            <div class="cake-candle" onclick="explodeCake()">🔥</div>
+
+            <!-- Tầng trên -->
+            <div class="cake-tier tier-top" id="tier-top"></div>
+            <!-- Tầng dưới -->
+            <div class="cake-tier tier-bottom" id="tier-bottom"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Khung chứa Bong bóng ảnh (Ẩn lúc đầu) -->
+      <div class="floating-memories" id="floating-memories"></div>
+
+      <!-- Tooltip hiển thị lời nhắn khi click vào ảnh tròn -->
+      <div class="memory-tooltip" id="memory-tooltip"></div>
+    </div>
+
     <div class="letter-overlay" id="letter-overlay">
       <div class="envelope-wrapper" id="envelope-wrapper">
         <div class="env-body"></div>
@@ -1979,7 +2043,6 @@
     <div class="lightbox" id="lightbox">
       <div class="close-lightbox" onclick="closeLightbox()">✖</div>
       <div class="nav-btn prev-btn" onclick="changeImage(-1)">❮</div>
-
       <div class="lightbox-content">
         <img id="lightbox-img" src="" alt="Full Image" />
         <div class="heart-react-btn" onclick="burstHearts(event)">
@@ -1990,7 +2053,6 @@
           </svg>
         </div>
       </div>
-
       <div class="nav-btn next-btn" onclick="changeImage(1)">❯</div>
     </div>
 
@@ -2001,297 +2063,223 @@
         <div class="music-player-layout">
           <div class="now-playing-panel">
             <div class="music-avatar">
-              <img
-                src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=300&q=80"
-                alt="Now playing"
-              />
+              <img id="music-player-avatar" src="" alt="Now playing" />
             </div>
-            <div class="track-marquee" id="music-track-title">
-              <span>Ái Ngoài Anh Ái Nờ</span>
-            </div>
+            <div class="track-marquee" id="music-track-title"></div>
             <div class="music-progress">
               <div class="progress-time">
-                <span id="music-current-time">0:00</span>
-                <span id="music-duration">3:19</span>
+                <span id="music-time-current">0:00</span>
+                <span id="music-time-total">0:00</span>
               </div>
-              <div class="progress-rail">
+              <div class="progress-rail" id="music-progress-rail">
                 <div class="progress-fill" id="music-progress-fill"></div>
               </div>
             </div>
             <div class="music-controls">
-              <button
-                class="music-skip-btn"
-                onclick="skipMusicTrack(-1, event)"
-              >
-                ‹
+              <button class="music-skip-btn" onclick="skipTrack(-1, event)">
+                ❮
               </button>
               <button
                 class="music-toggle-btn"
                 id="music-toggle-btn"
-                onclick="toggleMusicPlay(event)"
+                onclick="togglePlay(event)"
               >
-                Play music
+                Play
               </button>
-              <button class="music-skip-btn" onclick="skipMusicTrack(1, event)">
-                ›
+              <button class="music-skip-btn" onclick="skipTrack(1, event)">
+                ❯
               </button>
             </div>
           </div>
 
-          <div class="playlist-panel">
-            <div class="playlist-track" onclick="selectMusicTrack(0, event)">
-              <img
-                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80"
-                alt=""
-              />
-              <span>In Love x Có Đôi Điều</span>
-            </div>
-            <div
-              class="playlist-track active"
-              onclick="selectMusicTrack(1, event)"
-            >
-              <img
-                src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=120&q=80"
-                alt=""
-              />
-              <span>Ái Ngoài Anh</span>
-            </div>
-            <div class="playlist-track" onclick="selectMusicTrack(2, event)">
-              <img
-                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
-                alt=""
-              />
-              <span>Track 06 x Nơi Này Có Anh</span>
-            </div>
-            <div class="playlist-track" onclick="selectMusicTrack(3, event)">
-              <img
-                src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80"
-                alt=""
-              />
-              <span>Là Say Bye Là Bye</span>
-            </div>
-            <div class="playlist-track" onclick="selectMusicTrack(4, event)">
-              <img
-                src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=120&q=80"
-                alt=""
-              />
-              <span>MISSING YOU</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="feature-overlay" id="gift-overlay">
-      <button class="feature-close" onclick="closeGiftBox()">×</button>
-      <div class="gift-stage" id="gift-stage">
-        <div class="gift-title">Birthday Gift</div>
-        <div class="gift-subtitle">Bam vao hop qua de mo dieu bat ngo</div>
-        <div class="gift-scene" onclick="openGiftBox()">
-          <div class="gift-card">
-            <strong>Happy Birthday!</strong>
-            <p>
-              Chuc em tuoi moi luon xinh dep, vui ve va ngap tran yeu thuong.
-            </p>
-          </div>
-          <div class="gift-bow"></div>
-          <div class="gift-lid"></div>
-          <div class="gift-body"></div>
+          <div class="playlist-panel" id="playlist-container"></div>
         </div>
       </div>
     </div>
 
     <script>
-      // 1. NHẠC NỀN
-      let musicStarted = false;
-      document.body.addEventListener("click", function () {
-        if (!musicStarted) {
-          const bgMusic = document.getElementById("bgMusic");
-          bgMusic.volume = 0.5;
-          bgMusic
-            .play()
-            .then(() => {
-              musicStarted = true;
-              syncMusicUi();
-            })
-            .catch((error) => console.log("Chặn tự phát nhạc: ", error));
-        }
-      });
-
-      const bgMusic = document.getElementById("bgMusic");
-      const musicOverlay = document.getElementById("music-overlay");
-      const musicBox = document.getElementById("music-box");
-      const musicToggleBtn = document.getElementById("music-toggle-btn");
-      const musicMenuItem = document.querySelector(".music-menu-item");
-      const musicTrackTitle = document.getElementById("music-track-title");
-      const musicCurrentTime = document.getElementById("music-current-time");
-      const musicDuration = document.getElementById("music-duration");
-      const musicProgressFill = document.getElementById("music-progress-fill");
-      const playlistTracks = document.querySelectorAll(".playlist-track");
-      const giftOverlay = document.getElementById("gift-overlay");
-      const giftStage = document.getElementById("gift-stage");
-      const musicTracks = [
-        { title: "In Love x Có Đôi Điều", duration: "3:12" },
-        { title: "Ái Ngoài Anh Ái Nờ", duration: "3:19" },
-        { title: "Track 06 x Nơi Này Có Anh", duration: "3:35" },
-        { title: "Là Say Bye Là Bye", duration: "3:08" },
-        { title: "MISSING YOU", duration: "3:41" },
+      // =========================================
+      // 1. DATA: DANH SÁCH BÀI HÁT (THAY LINK BẠN TẠI ĐÂY)
+      // =========================================
+      const myPlaylist = [
+        {
+          title: "Hôm nay là ngày duy nhất!",
+          src: "homnaylangayduynhat.mp4",
+          img: "DUNG1.jpg",
+          duration: "00:25",
+        },
+        {
+          title: "Mừng ngày sinh nhật",
+          src: "mungngaysinhnhat.mp4", // Đổi tên file thật của bạn vào đây
+          img: "dung2.jpg",
+          duration: "00:24",
+        },
+        {
+          title: "Đêm nay sao trời,...",
+          src: "demnaysaotroi.mp4",
+          img: "dung3.jpg",
+          duration: "00:31",
+        },
+        {
+          title: "Cộng thêm số của tuổi đời =))",
+          src: "congthemsocuatuoidoi.mp4",
+          img: "dung4.jpg",
+          duration: "00:26",
+        },
+        {
+          title: "HAPPY BIRTHDAY TO DUNGGG",
+          src: "HPBD.mp4",
+          img: "dung5.jpg",
+          duration: "00:20",
+        },
       ];
-      let activeMusicTrack = 1;
 
-      function syncMusicUi() {
-        const isPlaying = !bgMusic.paused;
-        musicBox.classList.toggle("playing", isPlaying);
-        musicMenuItem.classList.toggle("playing", isPlaying);
-        musicToggleBtn.textContent = isPlaying ? "Pause music" : "Play music";
-      }
+      // =========================================
+      // 2. LOGIC MUSIC PLAYER
+      // =========================================
+      let currentTrackIdx = 1; // Mặc định mở bài số 2
+      let musicStarted = false;
+      const bgAudio = document.getElementById("bgMusic");
+      const mAvatar = document.getElementById("music-player-avatar");
+      const mTitle = document.getElementById("music-track-title");
+      const mTimeCur = document.getElementById("music-time-current");
+      const mTimeTot = document.getElementById("music-time-total");
+      const mProgFill = document.getElementById("music-progress-fill");
+      const mProgRail = document.getElementById("music-progress-rail");
+      const pContainer = document.getElementById("playlist-container");
+      const mBox = document.getElementById("music-box");
+      const mToggleBtn = document.getElementById("music-toggle-btn");
+      const musicMenuIcon = document.querySelector(".music-menu-item");
 
-      function formatMusicTime(seconds) {
-        if (!Number.isFinite(seconds) || seconds < 0) return "0:00";
-        const minutes = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds % 60);
-        return `${minutes}:${secs.toString().padStart(2, "0")}`;
-      }
+      // Tự động phát nhạc khi click vào màn hình lần đầu
+      document.body.addEventListener(
+        "click",
+        function () {
+          if (!musicStarted) {
+            bgAudio.volume = 0.5;
+            bgAudio
+              .play()
+              .then(() => {
+                musicStarted = true;
+                syncMusicUI(true);
+              })
+              .catch((e) => console.log("Blocked autplay"));
+          }
+        },
+        { once: true },
+      );
 
-      function updateMusicProgress() {
-        const duration = Number.isFinite(bgMusic.duration)
-          ? bgMusic.duration
-          : 0;
-        const currentTime = Number.isFinite(bgMusic.currentTime)
-          ? bgMusic.currentTime
-          : 0;
-        const percent =
-          duration > 0 ? Math.min((currentTime / duration) * 100, 100) : 0;
-        musicCurrentTime.textContent = formatMusicTime(currentTime);
-        musicDuration.textContent =
-          duration > 0
-            ? formatMusicTime(duration)
-            : musicTracks[activeMusicTrack].duration;
-        musicProgressFill.style.width = `${percent}%`;
-      }
-
-      function selectMusicTrack(index, event) {
-        if (event) event.stopPropagation();
-        activeMusicTrack = (index + musicTracks.length) % musicTracks.length;
-        const track = musicTracks[activeMusicTrack];
-        musicTrackTitle.innerHTML = `<span>${track.title}</span>`;
-        musicDuration.textContent = track.duration;
-        playlistTracks.forEach((item, itemIndex) => {
-          item.classList.toggle("active", itemIndex === activeMusicTrack);
+      function renderPlaylist() {
+        pContainer.innerHTML = "";
+        myPlaylist.forEach((track, index) => {
+          const div = document.createElement("div");
+          div.className = `playlist-track ${index === currentTrackIdx ? "active" : ""}`;
+          div.onclick = (e) => {
+            e.stopPropagation();
+            playSpecificTrack(index);
+          };
+          div.innerHTML = `<img src="${track.img}" alt="cover"/> <span>${track.title}</span>`;
+          pContainer.appendChild(div);
         });
-        bgMusic.currentTime = 0;
-        updateMusicProgress();
-        if (!bgMusic.paused) {
-          bgMusic
-            .play()
-            .catch((error) => console.log("Khong the phat nhac: ", error));
-        }
       }
 
-      function skipMusicTrack(step, event) {
-        selectMusicTrack(activeMusicTrack + step, event);
-      }
+      function loadTrack(index) {
+        currentTrackIdx = index;
+        const track = myPlaylist[index];
+        bgAudio.src = track.src;
+        mAvatar.src = track.img;
+        mTitle.innerHTML = `<span>${track.title}</span>`;
+        mTimeTot.innerText = track.duration;
+        mTimeCur.innerText = "0:00";
+        mProgFill.style.width = "0%";
 
-      function showOverlay(overlay) {
-        overlay.style.display = "flex";
-        setTimeout(() => overlay.classList.add("show"), 10);
-      }
-
-      function hideOverlay(overlay) {
-        overlay.classList.remove("show");
-        setTimeout(() => {
-          overlay.style.display = "none";
-        }, 300);
-      }
-
-      function toggleMusicBox(event) {
-        event.stopPropagation();
-        showOverlay(musicOverlay);
-        if (bgMusic.paused) {
-          bgMusic.volume = 0.5;
-          bgMusic
-            .play()
-            .then(() => {
-              musicStarted = true;
-              syncMusicUi();
-            })
-            .catch((error) => console.log("Khong the phat nhac: ", error));
-        }
-        syncMusicUi();
-      }
-
-      function closeMusicBox() {
-        hideOverlay(musicOverlay);
-      }
-
-      function toggleMusicPlay(event) {
-        event.stopPropagation();
-        bgMusic.volume = 0.5;
-        if (bgMusic.paused) {
-          bgMusic
-            .play()
-            .then(() => {
-              musicStarted = true;
-              syncMusicUi();
-            })
-            .catch((error) => console.log("Khong the phat nhac: ", error));
-        } else {
-          bgMusic.pause();
-          syncMusicUi();
-        }
-      }
-
-      bgMusic.addEventListener("play", syncMusicUi);
-      bgMusic.addEventListener("pause", syncMusicUi);
-      bgMusic.addEventListener("timeupdate", updateMusicProgress);
-      bgMusic.addEventListener("loadedmetadata", updateMusicProgress);
-      selectMusicTrack(activeMusicTrack);
-
-      function showGiftBox() {
-        giftStage.classList.remove("opened");
-        giftStage
-          .querySelectorAll(".gift-sparkle")
-          .forEach((sparkle) => sparkle.remove());
-        showOverlay(giftOverlay);
-      }
-
-      function closeGiftBox() {
-        hideOverlay(giftOverlay);
-      }
-
-      function openGiftBox() {
-        if (giftStage.classList.contains("opened")) return;
-        giftStage.classList.add("opened");
-        createGiftSparkles();
-        if (typeof confetti === "function") {
-          confetti({
-            particleCount: 120,
-            spread: 75,
-            origin: { y: 0.58 },
-            zIndex: 260,
+        // Active item trong playlist
+        if (pContainer.hasChildNodes()) {
+          pContainer.querySelectorAll(".playlist-track").forEach((item, i) => {
+            item.classList.toggle("active", i === index);
           });
         }
       }
 
-      function createGiftSparkles() {
-        const icons = ["💖", "✨", "🎀", "🎂", "🎁", "🌸"];
-        for (let i = 0; i < 34; i++) {
-          const sparkle = document.createElement("div");
-          sparkle.className = "gift-sparkle";
-          sparkle.textContent = icons[Math.floor(Math.random() * icons.length)];
-          sparkle.style.setProperty("--tx", `${(Math.random() - 0.5) * 300}px`);
-          sparkle.style.setProperty("--ty", `${-90 - Math.random() * 190}px`);
-          sparkle.style.setProperty(
-            "--rot",
-            `${(Math.random() - 0.5) * 360}deg`,
-          );
-          sparkle.style.animationDelay = `${Math.random() * 0.18}s`;
-          giftStage.appendChild(sparkle);
-          setTimeout(() => sparkle.remove(), 1600);
+      function syncMusicUI(isPlaying) {
+        mBox.classList.toggle("playing", isPlaying);
+        musicMenuIcon.classList.toggle("playing", isPlaying);
+      }
+
+      function playSpecificTrack(index) {
+        loadTrack(index);
+        bgAudio
+          .play()
+          .then(() => syncMusicUI(true))
+          .catch((e) => console.log(e));
+      }
+
+      function togglePlay(e) {
+        if (e) e.stopPropagation();
+        if (bgAudio.paused) {
+          bgAudio.play().then(() => syncMusicUI(true));
+        } else {
+          bgAudio.pause();
+          syncMusicUI(false);
         }
       }
 
-      // 2. MẬT KHẨU
+      function skipTrack(step, e) {
+        if (e) e.stopPropagation();
+        let newIdx = currentTrackIdx + step;
+        if (newIdx >= myPlaylist.length) newIdx = 0;
+        if (newIdx < 0) newIdx = myPlaylist.length - 1;
+        playSpecificTrack(newIdx);
+      }
+
+      // Xử lý thanh tiến trình (Progress/Seek)
+      function formatTime(seconds) {
+        if (isNaN(seconds)) return "0:00";
+        const m = Math.floor(seconds / 60);
+        const s = Math.floor(seconds % 60);
+        return `${m}:${s < 10 ? "0" : ""}${s}`;
+      }
+      bgAudio.addEventListener("timeupdate", () => {
+        if (bgAudio.duration) {
+          const percent = (bgAudio.currentTime / bgAudio.duration) * 100;
+          mProgFill.style.width = `${percent}%`;
+          mTimeCur.innerText = formatTime(bgAudio.currentTime);
+        }
+      });
+      mProgRail.addEventListener("click", (e) => {
+        if (!bgAudio.duration) return;
+        const rect = mProgRail.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const percent = clickX / rect.width;
+        bgAudio.currentTime = percent * bgAudio.duration;
+      });
+      bgAudio.addEventListener("ended", () => skipTrack(1));
+
+      // Mở Đóng Modal Music
+      function showMusicBox(e) {
+        if (e) e.stopPropagation();
+        document.getElementById("music-overlay").style.display = "flex";
+        setTimeout(
+          () => document.getElementById("music-overlay").classList.add("show"),
+          10,
+        );
+        if (!pContainer.hasChildNodes()) {
+          renderPlaylist();
+          loadTrack(currentTrackIdx);
+        }
+      }
+      function closeMusicBox() {
+        document.getElementById("music-overlay").classList.remove("show");
+        setTimeout(
+          () =>
+            (document.getElementById("music-overlay").style.display = "none"),
+          300,
+        );
+      }
+
+      // =========================================
+      // 3. MẬT KHẨU
+      // =========================================
       const CORRECT_PIN = "1901";
       let currentPin = "";
       const dots = document.querySelectorAll(".dot");
@@ -2337,7 +2325,9 @@
         }
       }
 
-      // 3. PHÁO GIẤY
+      // =========================================
+      // 4. CÁC TÍNH NĂNG KHÁC (Pháo, Cào, Đọc thư, Ảnh)
+      // =========================================
       function fireConfetti() {
         var duration = 2.5 * 1000;
         var animationEnd = Date.now() + duration;
@@ -2371,48 +2361,40 @@
         }, 250);
       }
 
-      // 4. BÃO THẢ TIM TẠI ẢNH TO
       function burstHearts(e) {
         const btn = e.currentTarget;
         btn.style.transform = "scale(0.7)";
         setTimeout(() => (btn.style.transform = "scale(1.1)"), 150);
         setTimeout(() => (btn.style.transform = "scale(1)"), 300);
-
         const emojis = ["💖", "🌸", "✨", "🎀", "🥰", "🎁", "💗"];
         const rect = btn.getBoundingClientRect();
         const originX = rect.left + rect.width / 2;
         const originY = rect.top + rect.height / 2;
-
         for (let i = 0; i < 50; i++) {
           const particle = document.createElement("div");
           particle.className = "react-particle";
           particle.innerText =
             emojis[Math.floor(Math.random() * emojis.length)];
           document.body.appendChild(particle);
-
           const angle = Math.random() * Math.PI * 2;
           const velocity = 80 + Math.random() * 200;
           const tx = Math.cos(angle) * velocity;
           const ty = Math.sin(angle) * velocity - 100;
           const rot = (Math.random() - 0.5) * 360;
-
           particle.style.left = originX + "px";
           particle.style.top = originY + "px";
           particle.style.setProperty("--tx", `${tx}px`);
           particle.style.setProperty("--ty", `${ty}px`);
           particle.style.setProperty("--rot", `${rot}deg`);
-
           setTimeout(() => {
             particle.remove();
           }, 2000);
         }
       }
 
-      // 5. THẺ CÀO GỢI Ý
       const canvas = document.getElementById("scratch-pad");
       const ctx = canvas.getContext("2d");
       let isDrawing = false;
-
       function initScratchCard() {
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
@@ -2472,17 +2454,13 @@
       canvas.addEventListener("touchend", endPosition);
       canvas.addEventListener("touchmove", scratch, { passive: false });
 
-      // 6. ĐỌC THƯ TYPEWRITER
       const envelopeWrapper = document.getElementById("envelope-wrapper");
       const readingLetter = document.getElementById("reading-letter");
       const letterContent = document.getElementById("typewriter-text");
       const scrollContainer = document.getElementById("scroll-container");
-
       const secretMessage = `Gửi người con gái anh yêu, 🌸\n\nHôm nay là một ngày thật đặc biệt, bởi đó là ngày một thiên thần đã chào đời.\n\nChúc em bước sang tuổi mới luôn rạng rỡ, xinh đẹp và ngập tràn hạnh phúc.\n\nCảm ơn em vì đã luôn ở bên cạnh, mang đến cho anh những khoảnh khắc vô cùng ấm áp và ý nghĩa. Em chính là món quà tuyệt vời nhất mà cuộc sống này đã dành tặng cho anh.\n\nSinh nhật vui vẻ nhé, cô gái của anh! Yêu em nhiều! ❤️🎂🎁`;
-
       let typewriterTimer;
       let charIndex = 0;
-
       function showLetterOverlay() {
         const overlay = document.getElementById("letter-overlay");
         overlay.style.display = "flex";
@@ -2491,7 +2469,6 @@
           overlay.style.opacity = "1";
           overlay.style.transition = "opacity 0.3s ease";
         }, 10);
-
         envelopeWrapper.classList.remove("open");
         envelopeWrapper.style.display = "block";
         envelopeWrapper.style.opacity = "1";
@@ -2499,7 +2476,6 @@
         envelopeWrapper.style.animation = "none";
         envelopeWrapper.offsetHeight;
         envelopeWrapper.style.animation = null;
-
         readingLetter.classList.remove("show");
         letterContent.innerHTML = "";
         charIndex = 0;
@@ -2532,8 +2508,7 @@
         clearTimeout(typewriterTimer);
       }
 
-      // 7. ALBUM ẢNH
-      const myImages = [
+      const myGallery = [
         "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=500&q=80",
         "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=500&q=80",
         "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=80",
@@ -2545,12 +2520,11 @@
         "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=500&q=80",
       ];
       let currentImgIndex = 0;
-
       function showGallery() {
         const overlay = document.getElementById("image-overlay");
         const grid = document.getElementById("image-grid");
         if (grid.children.length === 0) {
-          myImages.forEach((src, index) => {
+          myGallery.forEach((src, index) => {
             let img = document.createElement("img");
             img.src = src;
             img.className = "grid-item";
@@ -2568,7 +2542,8 @@
       }
       function openLightbox(index) {
         currentImgIndex = index;
-        document.getElementById("lightbox-img").src = myImages[currentImgIndex];
+        document.getElementById("lightbox-img").src =
+          myGallery[currentImgIndex];
         document.getElementById("lightbox").style.display = "flex";
       }
       function closeLightbox() {
@@ -2576,13 +2551,352 @@
       }
       function changeImage(step) {
         currentImgIndex += step;
-        if (currentImgIndex >= myImages.length) currentImgIndex = 0;
-        if (currentImgIndex < 0) currentImgIndex = myImages.length - 1;
+        if (currentImgIndex >= myGallery.length) currentImgIndex = 0;
+        if (currentImgIndex < 0) currentImgIndex = myGallery.length - 1;
         const imgElement = document.getElementById("lightbox-img");
         imgElement.style.animation = "none";
         imgElement.offsetHeight;
-        imgElement.src = myImages[currentImgIndex];
+        imgElement.src = myGallery[currentImgIndex];
         imgElement.style.animation = "zoomInImg 0.3s ease";
+      }
+
+      // =========================================
+      // LOGIC BÁNH KEM 3D & BONG BÓNG ẢNH
+      // =========================================
+
+      // Dữ liệu: Mảng chứa Link ảnh và Lời chúc tương ứng (Bạn tự thay link ảnh và text nhé)
+      const myMemories = [
+        {
+          src: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=200",
+          text: "Nụ cười tỏa nắng ✨",
+        },
+        {
+          src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200",
+          text: "Xinh xỉu luôn 💖",
+        },
+        {
+          src: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200",
+          text: "Kỷ niệm đáng nhớ 🥰",
+        },
+        {
+          src: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200",
+          text: "I love you 3000 ❤️",
+        },
+        {
+          src: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=200",
+          text: "Mãi như này nhé 🌸",
+        },
+        {
+          src: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=200",
+          text: "Cô gái tháng 2 🎀",
+        },
+        {
+          src: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200",
+          text: "My Everything 🌍",
+        },
+        {
+          src: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=200",
+          text: "Happy Birthday 🎂",
+        },
+        {
+          src: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=200",
+          text: "Nhìn là muốn iu 😘",
+        },
+        {
+          src: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200",
+          text: "Xinh gái quá đi 😍",
+        },
+      ];
+
+      function build3DCake() {
+        const topTier = document.getElementById("tier-top");
+        const bottomTier = document.getElementById("tier-bottom");
+        topTier.innerHTML = "";
+        bottomTier.innerHTML = "";
+
+        const numPanels = myMemories.length; // Tổng số ảnh (mặc định là 10)
+        const angle = 360 / numPanels;
+
+        // KÍCH THƯỚC BÁNH (Đã phóng to hơn giống mẫu)
+        const wBottom = 120;
+        const hBottom = 160;
+        const wTop = 85;
+        const hTop = 115;
+
+        // Toán học tính bán kính đường tròn nội tiếp để ảnh khớp nhau không bị hở
+        const rBottom =
+          Math.round(wBottom / 2 / Math.tan(Math.PI / numPanels)) - 1;
+        const rTop = Math.round(wTop / 2 / Math.tan(Math.PI / numPanels)) - 1;
+
+        // Nâng tầng trên lên đặt vừa khít trên nắp tầng dưới
+        topTier.style.transform = `translateY(-${hBottom / 2 + hTop / 2}px)`;
+
+        // Vòng lặp ghép các bức ảnh thành thân bánh
+        myMemories.forEach((mem, i) => {
+          let pB = document.createElement("div");
+          pB.className = "cake-panel";
+          pB.style.width = `${wBottom}px`;
+          pB.style.height = `${hBottom}px`;
+          pB.style.left = `50%`;
+          pB.style.top = `50%`;
+          pB.style.marginLeft = `${-wBottom / 2}px`;
+          pB.style.marginTop = `${-hBottom / 2}px`;
+          pB.style.backgroundImage = `url(${mem.src})`;
+          pB.style.transform = `rotateY(${i * angle}deg) translateZ(${rBottom}px)`;
+          bottomTier.appendChild(pB);
+
+          let pT = document.createElement("div");
+          pT.className = "cake-panel";
+          pT.style.width = `${wTop}px`;
+          pT.style.height = `${hTop}px`;
+          pT.style.left = `50%`;
+          pT.style.top = `50%`;
+          pT.style.marginLeft = `${-wTop / 2}px`;
+          pT.style.marginTop = `${-hTop / 2}px`;
+          pT.style.backgroundImage = `url(${myMemories[numPanels - 1 - i].src})`;
+          pT.style.transform = `rotateY(${i * angle}deg) translateZ(${rTop}px)`;
+          topTier.appendChild(pT);
+        });
+
+        // Hàm tạo mặt nắp/đáy đậy kín bánh
+        function createFace(tier, radius, height, isTop, imgUrl) {
+          let face = document.createElement("div");
+          face.className = "cake-face";
+          // Tính bán kính đường tròn ngoại tiếp để nắp che kín hết mọi góc cạnh
+          const circumRadius = radius / Math.cos(Math.PI / numPanels);
+          const faceSize = circumRadius * 2;
+
+          face.style.width = `${faceSize}px`;
+          face.style.height = `${faceSize}px`;
+          face.style.left = `50%`;
+          face.style.top = `50%`;
+          face.style.marginLeft = `${-faceSize / 2}px`;
+          face.style.marginTop = `${-faceSize / 2}px`;
+
+          const rot = isTop ? 90 : -90;
+          const z = height / 2 - 1; // Lùi lại 1px để viền ảnh không bị đâm xuyên qua nắp
+          face.style.transform = `rotateX(${rot}deg) translateZ(${z}px)`;
+          face.style.backgroundImage = `url(${imgUrl})`;
+          tier.appendChild(face);
+        }
+
+        // Tạo nắp và đáy cho 2 tầng
+        createFace(bottomTier, rBottom, hBottom, true, myMemories[0].src);
+        createFace(bottomTier, rBottom, hBottom, false, "");
+        createFace(topTier, rTop, hTop, true, myMemories[2].src);
+        createFace(topTier, rTop, hTop, false, "");
+
+        // Gắn nến đứng chuẩn trên đỉnh cao nhất
+        const candle = document.querySelector(".cake-candle");
+        candle.style.left = "50%";
+        candle.style.top = "50%";
+        candle.style.marginLeft = "-25px"; // Lùi lại 1 nửa chiều rộng nến
+        candle.style.marginTop = `-${hBottom / 2 + hTop + 35}px`; // Đẩy lên đỉnh tầng trên
+      }
+
+      function showGiftBox() {
+        document.getElementById("gift-overlay").style.display = "flex";
+        setTimeout(
+          () => document.getElementById("gift-overlay").classList.add("show"),
+          10,
+        );
+
+        // Reset lại trạng thái bánh kem
+        document.getElementById("cake-3d-stage").style.display = "flex";
+        document.getElementById("cake-3d-stage").style.opacity = "1";
+        document.getElementById("cake-3d-stage").style.transform = "scale(1)";
+        document.getElementById("floating-memories").classList.remove("show");
+        document.getElementById("floating-memories").innerHTML = ""; // Xóa bong bóng cũ
+
+        build3DCake();
+      }
+
+      function closeGiftBox() {
+        document.getElementById("gift-overlay").classList.remove("show");
+        setTimeout(
+          () =>
+            (document.getElementById("gift-overlay").style.display = "none"),
+          300,
+        );
+      }
+
+      function explodeCake() {
+        // Nổ pháo giấy
+        fireConfetti();
+
+        // Làm mờ và ẩn bánh kem
+        const cakeStage = document.getElementById("cake-3d-stage");
+        cakeStage.style.opacity = "0";
+        cakeStage.style.transform = "scale(0.5)";
+
+        setTimeout(() => {
+          cakeStage.style.display = "none";
+
+          // Hiển thị khung bong bóng
+          const floatContainer = document.getElementById("floating-memories");
+          floatContainer.classList.add("show");
+
+          // Tạo bong bóng bay lên
+          myMemories.forEach((mem, i) => {
+            // Lặp lại 2 lần để có nhiều bong bóng hơn
+            for (let j = 0; j < 2; j++) {
+              let bubble = document.createElement("div");
+              bubble.className = "bubble-memory";
+              bubble.style.backgroundImage = `url(${mem.src})`;
+
+              const size = 60 + Math.random() * 60;
+              bubble.style.width = `${size}px`;
+              bubble.style.height = `${size}px`;
+              bubble.style.left = `${Math.random() * 80 + 5}%`;
+
+              // ĐÃ SỬA: Tăng tốc độ bay lên rất nhanh (Chỉ từ 3s đến 6s)
+              bubble.style.animationDuration = `${3 + Math.random() * 3}s`;
+              // ĐÃ SỬA: Xuất hiện dồn dập hơn
+              bubble.style.animationDelay = `${Math.random() * 2}s`;
+
+              // ĐÃ SỬA: Đổi sự kiện khi click vào bong bóng
+              bubble.onclick = (e) => burstBubble(e, mem.text, bubble);
+
+              floatContainer.appendChild(bubble);
+            }
+          });
+        }, 500);
+      }
+
+      // =========================================
+      // LOGIC XOAY BÁNH KEM 360 ĐỘ (TOUCH & MOUSE)
+      // =========================================
+      const dragArea = document.getElementById("cake-drag-area");
+      const cakeContainer = document.getElementById("cake-container");
+
+      let isDraggingCake = false;
+      let previousX = 0,
+        previousY = 0;
+      let currentRotX = -15,
+        currentRotY = 0; // Góc mặc định ban đầu
+
+      // --- CHO MÁY TÍNH (MOUSE) ---
+      dragArea.addEventListener("mousedown", (e) => {
+        isDraggingCake = true;
+        previousX = e.clientX;
+        previousY = e.clientY;
+      });
+      window.addEventListener("mouseup", () => (isDraggingCake = false));
+      window.addEventListener("mousemove", (e) => {
+        if (!isDraggingCake) return;
+        const deltaX = e.clientX - previousX;
+        const deltaY = e.clientY - previousY;
+
+        currentRotY += deltaX * 0.6; // Kéo ngang -> Xoay quanh trục Y
+        currentRotX -= deltaY * 0.6; // Kéo dọc -> Xoay quanh trục X
+
+        // Giới hạn góc lật lên xuống để bánh không bị lộn ngược hoàn toàn (Tùy chọn)
+        currentRotX = Math.max(-80, Math.min(80, currentRotX));
+
+        cakeContainer.style.transform = `rotateX(${currentRotX}deg) rotateY(${currentRotY}deg)`;
+        previousX = e.clientX;
+        previousY = e.clientY;
+      });
+
+      // --- CHO ĐIỆN THOẠI (TOUCH) ---
+      dragArea.addEventListener(
+        "touchstart",
+        (e) => {
+          isDraggingCake = true;
+          previousX = e.touches[0].clientX;
+          previousY = e.touches[0].clientY;
+        },
+        { passive: false },
+      );
+
+      window.addEventListener("touchend", () => (isDraggingCake = false));
+      window.addEventListener(
+        "touchmove",
+        (e) => {
+          if (!isDraggingCake) return;
+          const deltaX = e.touches[0].clientX - previousX;
+          const deltaY = e.touches[0].clientY - previousY;
+
+          currentRotY += deltaX * 0.8;
+          currentRotX -= deltaY * 0.8;
+          currentRotX = Math.max(-80, Math.min(80, currentRotX));
+
+          cakeContainer.style.transform = `rotateX(${currentRotX}deg) rotateY(${currentRotY}deg)`;
+          previousX = e.touches[0].clientX;
+          previousY = e.touches[0].clientY;
+        },
+        { passive: false },
+      );
+
+      // HÀM MỚI: Xử lý biến thành hoa nổ và rơi tin nhắn
+      function burstBubble(e, text, bubble) {
+        e.stopPropagation();
+
+        // 1. Lấy tọa độ của bong bóng khi bị click
+        const rect = bubble.getBoundingClientRect();
+        const startX = rect.left;
+        const startY = rect.top;
+        const size = rect.width;
+
+        // 2. Xóa bong bóng ảnh
+        bubble.remove();
+
+        // 3. Hiệu ứng nổ pháo giấy nhỏ xíu tại đúng vị trí click
+        if (typeof confetti === "function") {
+          confetti({
+            particleCount: 20,
+            spread: 60,
+            origin: {
+              x: (startX + size / 2) / window.innerWidth,
+              y: (startY + size / 2) / window.innerHeight,
+            },
+            zIndex: 1000,
+            colors: ["#ff1493", "#ffb6c1", "#ffffff"],
+          });
+        }
+
+        const floatContainer = document.getElementById("floating-memories");
+
+        // 4. Sinh ra bông hoa
+        const flower = document.createElement("div");
+        flower.className = "falling-flower";
+        flower.innerText = "🌸"; // Bạn có thể thay bằng emoji hoa khác 🌺 🌻 🌹
+        flower.style.left = `${startX + size / 2 - 32}px`; // Căn giữa vị trí nổ
+        flower.style.top = `${startY}px`;
+        floatContainer.appendChild(flower);
+
+        // 5. Sinh ra tin nhắn rơi cùng
+        const msg = document.createElement("div");
+        msg.className = "falling-text";
+        msg.innerText = text;
+        msg.style.left = `${startX + size / 2}px`;
+        msg.style.top = `${startY + 60}px`;
+        floatContainer.appendChild(msg);
+
+        // 6. Xóa cả 2 khỏi DOM sau khi rơi xong (2.5 giây)
+        setTimeout(() => {
+          flower.remove();
+          msg.remove();
+        }, 2500);
+      }
+      // Xử lý Tooltip Text khi click ảnh tròn
+      let tooltipTimeout;
+      function showMemoryText(e, text) {
+        e.stopPropagation();
+        const tooltip = document.getElementById("memory-tooltip");
+        tooltip.innerText = text;
+
+        // Đặt vị trí text ngay tại con trỏ chuột
+        tooltip.style.left = `${e.clientX}px`;
+        tooltip.style.top = `${e.clientY}px`;
+
+        tooltip.classList.add("show");
+
+        // Ẩn sau 2.5 giây
+        clearTimeout(tooltipTimeout);
+        tooltipTimeout = setTimeout(() => {
+          tooltip.classList.remove("show");
+        }, 2500);
       }
     </script>
   </body>
