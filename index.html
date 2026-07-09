@@ -1770,7 +1770,7 @@
       >
     </div>
 
-    <audio id="bgMusic"></audio>
+    <audio id="bgMusic" preload="auto" playsinline webkit-playsinline></audio>
 
     <div class="card-container" id="lock-card">
       <div class="image-section">
@@ -2140,6 +2140,8 @@
       let currentTrackIdx = 1; // Mặc định mở bài số 2
       let musicStarted = false;
       const bgAudio = document.getElementById("bgMusic");
+      bgAudio.preload = "auto";
+      bgAudio.playsInline = true;
       const mAvatar = document.getElementById("music-player-avatar");
       const mTitle = document.getElementById("music-track-title");
       const mTimeCur = document.getElementById("music-time-current");
@@ -2186,7 +2188,11 @@
       function loadTrack(index) {
         currentTrackIdx = index;
         const track = myPlaylist[index];
+        bgAudio.pause();
+
         bgAudio.src = track.src;
+
+        bgAudio.load();
         mAvatar.src = track.img;
         mTitle.innerHTML = `<span>${track.title}</span>`;
         mTimeTot.innerText = track.duration;
@@ -2206,21 +2212,35 @@
         musicMenuIcon.classList.toggle("playing", isPlaying);
       }
 
-      function playSpecificTrack(index) {
+      async function playSpecificTrack(index) {
         loadTrack(index);
-        bgAudio
-          .play()
-          .then(() => syncMusicUI(true))
-          .catch((e) => console.log(e));
+
+        try {
+          await bgAudio.play();
+
+          syncMusicUI(true);
+        } catch (err) {
+          console.log(err);
+        }
       }
 
-      function togglePlay(e) {
+      async function togglePlay(e) {
         if (e) e.stopPropagation();
-        if (bgAudio.paused) {
-          bgAudio.play().then(() => syncMusicUI(true));
-        } else {
-          bgAudio.pause();
-          syncMusicUI(false);
+
+        try {
+          if (bgAudio.paused) {
+            await bgAudio.play();
+
+            syncMusicUI(true);
+          } else {
+            bgAudio.pause();
+
+            syncMusicUI(false);
+          }
+        } catch (err) {
+          console.log("Play blocked:", err);
+
+          alert("Hãy chạm vào màn hình một lần nữa để bật nhạc.");
         }
       }
 
@@ -2307,6 +2327,14 @@
       }
       function checkPin() {
         if (currentPin === CORRECT_PIN) {
+          bgAudio
+            .play()
+            .then(() => {
+              bgAudio.pause();
+
+              bgAudio.currentTime = 0;
+            })
+            .catch(() => {});
           lockCard.style.opacity = "0";
           lockCard.style.transform = "scale(0.5) rotate(-5deg)";
           setTimeout(() => {
