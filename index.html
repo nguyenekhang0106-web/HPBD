@@ -518,7 +518,7 @@
         font-weight: 800;
         cursor: pointer;
         box-shadow: 0 6px 16px rgba(255, 20, 147, 0.35);
-        z-index: 5;
+        z-index: 9999;
         transition: transform 0.25s ease;
       }
       .feature-close:hover {
@@ -1536,6 +1536,18 @@
         }
       }
 
+      /* THÊM MỚI: Định dạng cho câu chữ "Hãy nhấn vào ngọn nến" */
+      .gift-title {
+        font-family: "Dancing Script", cursive; /* Đồng bộ font uốn lượn */
+        color: #ff1493; /* Đổi sang màu hồng đậm */
+        font-size: 32px;
+        font-weight: bold;
+        text-shadow: 1px 1px 3px rgba(255, 20, 147, 0.2); /* Tạo bóng chữ nhẹ */
+        margin-bottom: 20px;
+        z-index: 10;
+        position: relative;
+      }
+
       /* Khung bong bóng ảnh bay */
       .floating-memories {
         position: absolute;
@@ -1770,7 +1782,7 @@
       >
     </div>
 
-    <audio id="bgMusic"></audio>
+    <audio id="bgMusic" playsinline webkit-playsinline></audio>
 
     <div class="card-container" id="lock-card">
       <div class="image-section">
@@ -1978,7 +1990,7 @@
 
       <!-- Khung chứa Bánh kem -->
       <div class="cake-3d-stage" id="cake-3d-stage">
-        <div class="gift-title" id="cake-title">Hãy nhấn vào ngọn nến 🔥</div>
+        <div class="gift-title" id="cake-title">nhấp vào ngọn nến đi nha🔥</div>
 
         <!-- Nơi người dùng dùng chuột/tay để xoay -->
         <div class="cake-drag-area" id="cake-drag-area">
@@ -2099,45 +2111,45 @@
 
     <script>
       // =========================================
-      // 1. DATA: DANH SÁCH BÀI HÁT (THAY LINK BẠN TẠI ĐÂY)
+      // 1. DATA: DANH SÁCH BÀI HÁT
       // =========================================
       const myPlaylist = [
         {
           title: "Hôm nay là ngày duy nhất!",
-          src: "homnaylangayduynhat.mp4",
+          src: "homnaylangayduynhat.mp3", // BẮT BUỘC ĐỔI SANG .MP3
           img: "DUNG1.jpg",
           duration: "00:25",
         },
         {
           title: "Mừng ngày sinh nhật",
-          src: "mungngaysinhnhat.mp4", // Đổi tên file thật của bạn vào đây
+          src: "mungngaysinhnhat.mp3", // BẮT BUỘC ĐỔI SANG .MP3
           img: "dung2.jpg",
           duration: "00:24",
         },
         {
           title: "Đêm nay sao trời,...",
-          src: "demnaysaotroi.mp4",
+          src: "demnaysaotroi.mp3", // BẮT BUỘC ĐỔI SANG .MP3
           img: "dung3.jpg",
           duration: "00:31",
         },
         {
           title: "Cộng thêm số của tuổi đời =))",
-          src: "congthemsocuatuoidoi.mp4",
+          src: "congthemsocuatuoidoi.mp3", // BẮT BUỘC ĐỔI SANG .MP3
           img: "dung4.jpg",
           duration: "00:26",
         },
         {
           title: "HAPPY BIRTHDAY TO DUNGGG",
-          src: "HPBD.mp4",
+          src: "HPBD.mp3", // BẮT BUỘC ĐỔI SANG .MP3
           img: "dung5.jpg",
           duration: "00:20",
         },
       ];
 
       // =========================================
-      // 2. LOGIC MUSIC PLAYER
+      // 2. LOGIC MUSIC PLAYER (TỐI ƯU CHO ĐIỆN THOẠI)
       // =========================================
-      let currentTrackIdx = 1; // Mặc định mở bài số 2
+      let currentTrackIdx = 1;
       let musicStarted = false;
       const bgAudio = document.getElementById("bgMusic");
       const mAvatar = document.getElementById("music-player-avatar");
@@ -2151,23 +2163,27 @@
       const mToggleBtn = document.getElementById("music-toggle-btn");
       const musicMenuIcon = document.querySelector(".music-menu-item");
 
-      // Tự động phát nhạc khi click vào màn hình lần đầu
-      document.body.addEventListener(
-        "click",
-        function () {
-          if (!musicStarted) {
-            bgAudio.volume = 0.5;
-            bgAudio
-              .play()
-              .then(() => {
-                musicStarted = true;
-                syncMusicUI(true);
-              })
-              .catch((e) => console.log("Blocked autplay"));
-          }
-        },
-        { once: true },
-      );
+      // Khởi tạo sẵn link bài hát để điện thoại nhận diện luồng âm thanh ngay lập tức
+      bgAudio.src = myPlaylist[currentTrackIdx].src;
+
+      // Hàm mở khóa âm thanh bằng cả Click (PC) và Touch (Mobile)
+      function unlockAudio() {
+        if (!musicStarted) {
+          bgAudio.volume = 0.5;
+          bgAudio
+            .play()
+            .then(() => {
+              musicStarted = true;
+              syncMusicUI(true);
+              // Xóa sự kiện lắng nghe để tiết kiệm tài nguyên
+              document.removeEventListener("click", unlockAudio);
+              document.removeEventListener("touchstart", unlockAudio);
+            })
+            .catch((e) => console.log("Trình duyệt đang chặn tự động phát"));
+        }
+      }
+      document.addEventListener("click", unlockAudio);
+      document.addEventListener("touchstart", unlockAudio, { passive: true });
 
       function renderPlaylist() {
         pContainer.innerHTML = "";
@@ -2186,14 +2202,18 @@
       function loadTrack(index) {
         currentTrackIdx = index;
         const track = myPlaylist[index];
-        bgAudio.src = track.src;
+
+        // Kiểm tra nếu chuyển bài mới thì mới cập nhật src, tránh làm iPhone bị ngắt kết nối Audio
+        if (!bgAudio.src.includes(track.src)) {
+          bgAudio.src = track.src;
+        }
+
         mAvatar.src = track.img;
         mTitle.innerHTML = `<span>${track.title}</span>`;
         mTimeTot.innerText = track.duration;
         mTimeCur.innerText = "0:00";
         mProgFill.style.width = "0%";
 
-        // Active item trong playlist
         if (pContainer.hasChildNodes()) {
           pContainer.querySelectorAll(".playlist-track").forEach((item, i) => {
             item.classList.toggle("active", i === index);
@@ -2211,13 +2231,16 @@
         bgAudio
           .play()
           .then(() => syncMusicUI(true))
-          .catch((e) => console.log(e));
+          .catch((e) => alert("Vui lòng bấm nút Play để nghe nhạc!"));
       }
 
       function togglePlay(e) {
         if (e) e.stopPropagation();
         if (bgAudio.paused) {
-          bgAudio.play().then(() => syncMusicUI(true));
+          bgAudio
+            .play()
+            .then(() => syncMusicUI(true))
+            .catch((e) => console.log("Lỗi phát nhạc"));
         } else {
           bgAudio.pause();
           syncMusicUI(false);
@@ -2232,13 +2255,13 @@
         playSpecificTrack(newIdx);
       }
 
-      // Xử lý thanh tiến trình (Progress/Seek)
       function formatTime(seconds) {
         if (isNaN(seconds)) return "0:00";
         const m = Math.floor(seconds / 60);
         const s = Math.floor(seconds % 60);
         return `${m}:${s < 10 ? "0" : ""}${s}`;
       }
+
       bgAudio.addEventListener("timeupdate", () => {
         if (bgAudio.duration) {
           const percent = (bgAudio.currentTime / bgAudio.duration) * 100;
@@ -2246,6 +2269,7 @@
           mTimeCur.innerText = formatTime(bgAudio.currentTime);
         }
       });
+
       mProgRail.addEventListener("click", (e) => {
         if (!bgAudio.duration) return;
         const rect = mProgRail.getBoundingClientRect();
@@ -2253,9 +2277,9 @@
         const percent = clickX / rect.width;
         bgAudio.currentTime = percent * bgAudio.duration;
       });
+
       bgAudio.addEventListener("ended", () => skipTrack(1));
 
-      // Mở Đóng Modal Music
       function showMusicBox(e) {
         if (e) e.stopPropagation();
         document.getElementById("music-overlay").style.display = "flex";
@@ -2268,6 +2292,7 @@
           loadTrack(currentTrackIdx);
         }
       }
+
       function closeMusicBox() {
         document.getElementById("music-overlay").classList.remove("show");
         setTimeout(
@@ -2685,16 +2710,19 @@
 
         // Tạo nắp và đáy cho 2 tầng
         createFace(bottomTier, rBottom, hBottom, true, myMemories[0].src);
-        createFace(bottomTier, rBottom, hBottom, false, "");
+        // ĐÃ SỬA: Đưa ảnh thứ 2 vào làm đáy tầng dưới thay vì để trống ("")
+        createFace(bottomTier, rBottom, hBottom, false, myMemories[1].src);
         createFace(topTier, rTop, hTop, true, myMemories[2].src);
-        createFace(topTier, rTop, hTop, false, "");
+        // ĐÃ SỬA: Đưa ảnh thứ 4 vào làm đáy tầng trên
+        createFace(topTier, rTop, hTop, false, myMemories[3].src);
 
         // Gắn nến đứng chuẩn trên đỉnh cao nhất
         const candle = document.querySelector(".cake-candle");
         candle.style.left = "50%";
         candle.style.top = "50%";
-        candle.style.marginLeft = "-25px"; // Lùi lại 1 nửa chiều rộng nến
-        candle.style.marginTop = `-${hBottom / 2 + hTop + 35}px`; // Đẩy lên đỉnh tầng trên
+        candle.style.marginLeft = "-25px";
+        // ĐÃ SỬA: Tăng số từ 35 lên 65 để kéo ngọn nến nhô hẳn lên trên mặt bánh
+        candle.style.marginTop = `-${hBottom / 2 + hTop + 65}px`;
       }
 
       function showGiftBox() {
@@ -2767,7 +2795,7 @@
       }
 
       // =========================================
-      // LOGIC XOAY BÁNH KEM 360 ĐỘ (TOUCH & MOUSE)
+      // LOGIC XOAY BÁNH KEM 360 ĐỘ (TỰ ĐỘNG + TOUCH & MOUSE)
       // =========================================
       const dragArea = document.getElementById("cake-drag-area");
       const cakeContainer = document.getElementById("cake-container");
@@ -2777,6 +2805,20 @@
         previousY = 0;
       let currentRotX = -15,
         currentRotY = 0; // Góc mặc định ban đầu
+
+      // TÍNH NĂNG MỚI: Tự động xoay bánh kem liên tục
+      function autoSpinCake() {
+        // Chỉ xoay khi người dùng không giữ chuột VÀ màn hình quà đang mở
+        if (
+          !isDraggingCake &&
+          document.getElementById("gift-overlay").classList.contains("show")
+        ) {
+          currentRotY -= 0.25; // Tốc độ xoay tự động (thay đổi số này nếu muốn nhanh/chậm hơn)
+          cakeContainer.style.transform = `rotateX(${currentRotX}deg) rotateY(${currentRotY}deg)`;
+        }
+        requestAnimationFrame(autoSpinCake); // Lặp lại liên tục cho mượt
+      }
+      autoSpinCake(); // Kích hoạt vòng lặp
 
       // --- CHO MÁY TÍNH (MOUSE) ---
       dragArea.addEventListener("mousedown", (e) => {
@@ -2790,10 +2832,10 @@
         const deltaX = e.clientX - previousX;
         const deltaY = e.clientY - previousY;
 
-        currentRotY += deltaX * 0.6; // Kéo ngang -> Xoay quanh trục Y
-        currentRotX -= deltaY * 0.6; // Kéo dọc -> Xoay quanh trục X
+        currentRotY += deltaX * 0.6; // Kéo ngang -> Xoay trục Y
+        currentRotX -= deltaY * 0.6; // Kéo dọc -> Xoay trục X
 
-        // Giới hạn góc lật lên xuống để bánh không bị lộn ngược hoàn toàn (Tùy chọn)
+        // Giới hạn lật lên xuống để bánh không bị lộn ngược hoàn toàn
         currentRotX = Math.max(-80, Math.min(80, currentRotX));
 
         cakeContainer.style.transform = `rotateX(${currentRotX}deg) rotateY(${currentRotY}deg)`;
